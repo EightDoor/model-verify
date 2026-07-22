@@ -12,6 +12,7 @@ import {
   CartesianGrid,
 } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useI18n } from '@/lib/i18n'
 
 interface DistributionChartProps {
   baseDistribution: Distribution
@@ -27,7 +28,8 @@ function prepareChartData(
   compareTotal: number,
 ): Array<{
   number: string
-  [baselineLabel: string]: string | number
+  Baseline: number
+  Target: number
 }> {
   const allKeys = new Set([
     ...Object.keys(base),
@@ -38,8 +40,8 @@ function prepareChartData(
 
   return sortedKeys.map((key) => ({
     number: key,
-    'Baseline': ((base[key] ?? 0) / Math.max(baseTotal, 1)) * 100,
-    'Target': ((compare[key] ?? 0) / Math.max(compareTotal, 1)) * 100,
+    Baseline: ((base[key] ?? 0) / Math.max(baseTotal, 1)) * 100,
+    Target: ((compare[key] ?? 0) / Math.max(compareTotal, 1)) * 100,
   }))
 }
 
@@ -49,13 +51,14 @@ export function DistributionChart({
   baseTotal,
   compareTotal,
 }: DistributionChartProps) {
+  const { t } = useI18n()
   const data = prepareChartData(baseDistribution, compareDistribution, baseTotal, compareTotal)
 
   if (data.length === 0) {
     return (
       <Card>
         <CardContent className="pt-6 text-center text-muted-foreground">
-          No valid samples collected.
+          {t('chart.noData')}
         </CardContent>
       </Card>
     )
@@ -64,12 +67,12 @@ export function DistributionChart({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Distribution Comparison</CardTitle>
+        <CardTitle className="text-base">{t('chart.title')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="text-xs text-muted-foreground mb-4 space-y-1">
-          <p>Baseline valid samples: {baseTotal}</p>
-          <p>Target valid samples: {compareTotal}</p>
+          <p>{t('chart.baselineSamples', { n: baseTotal })}</p>
+          <p>{t('chart.targetSamples', { n: compareTotal })}</p>
         </div>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={data} barGap={2}>
@@ -91,12 +94,14 @@ export function DistributionChart({
             <Legend />
             <Bar
               dataKey="Baseline"
+              name={t('chart.baseline')}
               fill="hsl(var(--chart-1))"
               opacity={0.7}
               radius={[2, 2, 0, 0]}
             />
             <Bar
               dataKey="Target"
+              name={t('chart.target')}
               fill="hsl(var(--chart-2))"
               opacity={0.7}
               radius={[2, 2, 0, 0]}

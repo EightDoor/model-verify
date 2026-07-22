@@ -1,6 +1,7 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
+import { useI18n } from '@/lib/i18n'
 
 interface ProgressPanelProps {
   elapsed: number
@@ -9,13 +10,17 @@ interface ProgressPanelProps {
 }
 
 export function ProgressPanel({ elapsed, phase, errorMessage }: ProgressPanelProps) {
+  const { t } = useI18n()
+
   if (phase === 'idle') return null
 
   if (phase === 'error') {
     return (
       <Card className="border-destructive">
         <CardContent className="pt-6">
-          <div className="text-destructive font-medium">Error: {errorMessage}</div>
+          <div className="text-destructive font-medium">
+            {t('progress.error', { msg: errorMessage ?? '' })}
+          </div>
         </CardContent>
       </Card>
     )
@@ -29,11 +34,11 @@ export function ProgressPanel({ elapsed, phase, errorMessage }: ProgressPanelPro
         <div className="flex items-center gap-2">
           <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
           <span className="font-medium">
-            {phase === 'probing' ? 'Probing endpoints...' : 'Analyzing distributions...'}
+            {phase === 'probing' ? t('progress.probing') : t('progress.analyzing')}
           </span>
         </div>
         <p className="text-sm text-muted-foreground">
-          Elapsed: {elapsed}s · This may take 30-60 seconds
+          {t('progress.elapsed', { n: elapsed })}
         </p>
         <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
           <div

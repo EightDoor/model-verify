@@ -7,8 +7,10 @@ import { ResultPanel } from '@/components/result-panel'
 import { ProbeResult, Phase } from '@/lib/types'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
+import { useI18n } from '@/lib/i18n'
 
 export default function Home() {
+  const { t, locale, setLocale } = useI18n()
   const [phase, setPhase] = useState<Phase>('idle')
   const [elapsed, setElapsed] = useState(0)
   const [errorMessage, setErrorMessage] = useState('')
@@ -101,25 +103,39 @@ export default function Home() {
   return (
     <main className="flex-1 w-full max-w-4xl mx-auto px-4 py-8 space-y-8">
       <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Model Verify</h1>
-        <p className="text-muted-foreground">
-          Detect relay API model substitution using single-token random-number fingerprint
-          (<a
-            href="https://arxiv.org/abs/2607.10252"
-            target="_blank"
-            rel="noreferrer"
-            className="underline underline-offset-2 hover:text-foreground"
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold tracking-tight">{t('app.title')}</h1>
+            <p className="text-muted-foreground">
+              {t('app.subtitle')}
+              {' ('}
+              <a
+                href="https://arxiv.org/abs/2607.10252"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-2 hover:text-foreground"
+              >
+                {t('app.ref')}
+              </a>
+              )
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setLocale(locale === 'zh' ? 'en' : 'zh')}
+            className="shrink-0"
           >
-            One Token Is Enough, 2026
-          </a>)
-        </p>
+            {t('lang.switch')}
+          </Button>
+        </div>
       </header>
 
       <ConfigForm onStart={handleStart} loading={phase === 'probing'} />
 
       {phase === 'probing' && (
         <Button variant="outline" onClick={handleCancel} className="w-full">
-          Cancel
+          {t('button.cancel')}
         </Button>
       )}
 

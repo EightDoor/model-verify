@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { DistributionChart } from './distribution-chart'
 import { Distribution } from '@/lib/types'
+import { useI18n } from '@/lib/i18n'
 
 interface ResultPanelProps {
   verdict: Verdict
@@ -20,12 +21,6 @@ interface ResultPanelProps {
   warnings: string[]
 }
 
-const verdictConfig: Record<Verdict, { label: string; color: string; variant: 'default' | 'secondary' | 'destructive' }> = {
-  pass: { label: 'PASS', color: 'text-green-600', variant: 'default' },
-  suspect: { label: 'SUSPECT', color: 'text-amber-600', variant: 'secondary' },
-  fail: { label: 'FAIL', color: 'text-red-600', variant: 'destructive' },
-}
-
 export function ResultPanel({
   verdict,
   jsd,
@@ -38,6 +33,14 @@ export function ResultPanel({
   compareFailCount,
   warnings,
 }: ResultPanelProps) {
+  const { t } = useI18n()
+
+  const verdictConfig: Record<Verdict, { labelKey: string; color: string; variant: 'default' | 'secondary' | 'destructive' }> = {
+    pass: { labelKey: 'verdict.pass', color: 'text-green-600', variant: 'default' },
+    suspect: { labelKey: 'verdict.suspect', color: 'text-amber-600', variant: 'secondary' },
+    fail: { labelKey: 'verdict.fail', color: 'text-red-600', variant: 'destructive' },
+  }
+
   const config = verdictConfig[verdict]
 
   return (
@@ -57,9 +60,9 @@ export function ResultPanel({
       <Card className={verdict === 'pass' ? 'border-green-500' : verdict === 'fail' ? 'border-red-500' : 'border-amber-500'}>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>Verification Result</CardTitle>
+            <CardTitle>{t('result.title')}</CardTitle>
             <Badge variant={config.variant} className="text-sm px-3 py-1">
-              {config.label}
+              {t(config.labelKey)}
             </Badge>
           </div>
         </CardHeader>
@@ -69,15 +72,15 @@ export function ResultPanel({
               <div className={`text-4xl font-bold ${config.color}`}>
                 {jsd.toFixed(4)}
               </div>
-              <div className="text-xs text-muted-foreground mt-1">Jensen-Shannon Divergence</div>
+              <div className="text-xs text-muted-foreground mt-1">{t('result.jsd')}</div>
             </div>
             <Separator orientation="vertical" className="h-16 max-sm:hidden" />
             <div className="text-sm text-muted-foreground space-y-1">
-              <p>Lower JSD = more similar distributions</p>
-              <p>Pass: ≤0.15 | Suspect: 0.15–0.3 | Fail: ≥0.3</p>
-              <p>Probe requests per endpoint: {sampleCount}</p>
-              <p>Baseline valid: {baseTotal}/{sampleCount} ({baseFailCount} failed)</p>
-              <p>Target valid: {compareTotal}/{sampleCount} ({compareFailCount} failed)</p>
+              <p>{t('result.hint')}</p>
+              <p>{t('result.threshold')}</p>
+              <p>{t('result.samples', { n: sampleCount })}</p>
+              <p>{t('result.baselineValid', { baseValid: baseTotal, total: sampleCount, baseFail: baseFailCount })}</p>
+              <p>{t('result.targetValid', { compareValid: compareTotal, total: sampleCount, compareFail: compareFailCount })}</p>
             </div>
           </div>
         </CardContent>

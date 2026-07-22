@@ -40,6 +40,8 @@ Or deploy via CLI:
 npx vercel
 ```
 
+> **Live Demo**: [https://model-verify.vercel.app](https://model-verify.vercel.app)
+>
 > **Note**: Vercel Hobby plan has a 10s function timeout — use 30-50 samples. Pro plan (60s timeout) handles the full 100.
 
 ## Usage

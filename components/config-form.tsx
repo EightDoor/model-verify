@@ -14,6 +14,7 @@ import {
 import { Slider } from '@/components/ui/slider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ProviderType, DEFAULT_SAMPLES } from '@/lib/types'
+import { useI18n } from '@/lib/i18n'
 
 export interface EndpointFormData {
   url: string
@@ -41,6 +42,7 @@ function isValidUrl(url: string): boolean {
 }
 
 export function ConfigForm({ onStart, loading }: ConfigFormProps) {
+  const { t } = useI18n()
   const [base, setBase] = useState<EndpointFormData>({
     url: '',
     apiKey: '',
@@ -76,6 +78,7 @@ export function ConfigForm({ onStart, loading }: ConfigFormProps) {
 
   const renderEndpointSection = (
     label: string,
+    sectionKey: string,
     data: EndpointFormData,
     onChange: (d: EndpointFormData) => void,
     placeholder: string,
@@ -87,37 +90,37 @@ export function ConfigForm({ onStart, loading }: ConfigFormProps) {
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="space-y-1.5">
-          <Label htmlFor={`${label}-provider`}>Provider</Label>
+          <Label htmlFor={`${sectionKey}-provider`}>{t('config.provider')}</Label>
           <Select
             value={data.provider}
             onValueChange={(v) => onChange({ ...data, provider: (v ?? 'openai') as ProviderType })}
           >
-            <SelectTrigger id={`${label}-provider`}>
+            <SelectTrigger id={`${sectionKey}-provider`}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="openai">OpenAI Compatible</SelectItem>
-              <SelectItem value="anthropic">Anthropic</SelectItem>
+              <SelectItem value="openai">{t('config.provider.openai')}</SelectItem>
+              <SelectItem value="anthropic">{t('config.provider.anthropic')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor={`${label}-url`}>Base URL</Label>
+          <Label htmlFor={`${sectionKey}-url`}>{t('config.baseUrl')}</Label>
           <Input
-            id={`${label}-url`}
+            id={`${sectionKey}-url`}
             value={data.url}
             onChange={(e) => onChange({ ...data, url: e.target.value })}
             placeholder={placeholder}
             className={!urlValid ? 'border-red-500' : ''}
           />
           {!urlValid && (
-            <p className="text-xs text-red-500">Enter a valid http(s) URL</p>
+            <p className="text-xs text-red-500">{t('config.urlInvalid')}</p>
           )}
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor={`${label}-key`}>API Key</Label>
+          <Label htmlFor={`${sectionKey}-key`}>{t('config.apiKey')}</Label>
           <Input
-            id={`${label}-key`}
+            id={`${sectionKey}-key`}
             type="password"
             value={data.apiKey}
             onChange={(e) => onChange({ ...data, apiKey: e.target.value })}
@@ -125,9 +128,9 @@ export function ConfigForm({ onStart, loading }: ConfigFormProps) {
           />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor={`${label}-model`}>Model</Label>
+          <Label htmlFor={`${sectionKey}-model`}>{t('config.model')}</Label>
           <Input
-            id={`${label}-model`}
+            id={`${sectionKey}-model`}
             value={data.model}
             onChange={(e) => onChange({ ...data, model: e.target.value })}
             placeholder="gpt-4o / claude-sonnet-4"
@@ -141,14 +144,16 @@ export function ConfigForm({ onStart, loading }: ConfigFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="flex gap-4 max-lg:flex-col">
         {renderEndpointSection(
-          'Baseline (Official API)',
+          t('config.baseline'),
+          'baseline',
           base,
           setBase,
           'https://api.openai.com',
           baseValid,
         )}
         {renderEndpointSection(
-          'Target (Relay API)',
+          t('config.target'),
+          'target',
           compare,
           setCompare,
           'https://your-relay.com',
@@ -159,7 +164,7 @@ export function ConfigForm({ onStart, loading }: ConfigFormProps) {
       <Card>
         <CardContent className="pt-6">
           <div className="space-y-3">
-            <Label>Samples per endpoint: {samples}</Label>
+            <Label>{t('config.samples', { n: samples })}</Label>
             <Slider
               value={[samples]}
               onValueChange={(value) => {
@@ -171,14 +176,14 @@ export function ConfigForm({ onStart, loading }: ConfigFormProps) {
               step={5}
             />
             <p className="text-xs text-muted-foreground">
-              Higher = more accurate, slower. Each endpoint sends {samples} probe requests.
+              {t('config.samples.hint', { n: samples })}
             </p>
           </div>
         </CardContent>
       </Card>
 
       <Button type="submit" disabled={isDisabled} className="w-full" size="lg">
-        {loading ? 'Verifying...' : 'Start Verification'}
+        {loading ? t('config.submitting') : t('config.submit')}
       </Button>
     </form>
   )

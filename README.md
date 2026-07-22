@@ -40,6 +40,8 @@ npm test       # 运行测试
 npx vercel
 ```
 
+> **在线演示**：[https://model-verify.vercel.app](https://model-verify.vercel.app)
+>
 > **注意**：Vercel Hobby 计划 Serverless Functions 超时 10s，建议 Samples 设为 30-50；Pro 计划超时 60s，可跑满 100。
 
 ## 使用方法
