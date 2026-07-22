@@ -28,12 +28,15 @@ npm test        # run unit tests (21 tests)
 
 ## Deploy to Vercel
 
-[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-username%2Fmodel-verify)
+First, **Fork** this repo to your GitHub account, then:
 
-One-click deploy (fork the repo first and replace `your-username` in the link above):
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-username%2Fmodel-verify&project-name=model-verify)
+
+> Replace `your-username` in the link above with your GitHub username before clicking.
+
+Or deploy via CLI:
 
 ```bash
-# Or deploy via CLI
 npx vercel
 ```
 

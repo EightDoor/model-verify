@@ -28,12 +28,15 @@ npm test       # 运行测试
 
 ## 部署到 Vercel
 
-[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-username%2Fmodel-verify)
+首先 **Fork** 本仓库到你的 GitHub 账号下，然后：
 
-一键部署（需先 Fork 仓库并替换上方链接中的 `your-username`）：
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-username%2Fmodel-verify&project-name=model-verify)
+
+> 点击上方按钮前，将链接中的 `your-username` 替换为你的 GitHub 用户名。
+
+或使用 CLI 部署：
 
 ```bash
-# 或使用 CLI 部署
 npx vercel
 ```
 
