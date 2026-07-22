@@ -28,8 +28,13 @@ npm test       # 运行测试
 
 ## 部署到 Vercel
 
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-username%2Fmodel-verify)
+
+一键部署（需先 Fork 仓库并替换上方链接中的 `your-username`）：
+
 ```bash
-npx vercel deploy
+# 或使用 CLI 部署
+npx vercel
 ```
 
 > **注意**：Vercel Hobby 计划 Serverless Functions 超时 10s，建议 Samples 设为 30-50；Pro 计划超时 60s，可跑满 100。

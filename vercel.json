@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "app/api/probe/route.ts": {
+      "maxDuration": 60
+    }
+  },
+  "framework": "nextjs"
+}

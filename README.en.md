@@ -28,8 +28,13 @@ npm test        # run unit tests (21 tests)
 
 ## Deploy to Vercel
 
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-username%2Fmodel-verify)
+
+One-click deploy (fork the repo first and replace `your-username` in the link above):
+
 ```bash
-npx vercel deploy
+# Or deploy via CLI
+npx vercel
 ```
 
 > **Note**: Vercel Hobby plan has a 10s function timeout — use 30-50 samples. Pro plan (60s timeout) handles the full 100.
